@@ -1,5 +1,4 @@
 import allure
-from locators.main_page_locators import MainPageLocators
 from pages.main_page import MainPage
 from pytest_check import check
 
@@ -14,8 +13,7 @@ class TestRouteSwitching:
         page.click_on_optimal_mode()
         second_cost = page.save_route_cost()
         second_time = page.save_route_time()
-
-        with check: assert page.check_active_tab(MainPageLocators.MODE_OPTIMAL)
+        page.check_optimal_is_active()
         with check: assert first_cost != second_cost or first_time != second_time
 
     @allure.title('Переключение вида на Свой')
@@ -23,14 +21,8 @@ class TestRouteSwitching:
     def test_switch_mode_to_mine(self, driver, enter_addresses):
         page=MainPage(driver)
         page.click_on_mine_mode()
-
-        with check: assert page.check_active_tab(MainPageLocators.MODE_MINE)
-        with check: assert page.check_type_is_not_disabled(MainPageLocators.TYPE_CAR)
-        with check: assert page.check_type_is_not_disabled(MainPageLocators.TYPE_WALK)
-        with check: assert page.check_type_is_not_disabled(MainPageLocators.TYPE_TAXI)
-        with check: assert page.check_type_is_not_disabled(MainPageLocators.TYPE_BIKE)
-        with check: assert page.check_type_is_not_disabled(MainPageLocators.TYPE_SCOOTER)
-        with check: assert page.check_type_is_not_disabled(MainPageLocators.TYPE_DRIVE)
+        page.check_mine_is_active()
+        page.check_all_type_is_not_disabled()
 
     @allure.title('При выборе вида маршрута Быстрый активна кнопка Вызвать такси')
     def test_call_taxi_button_visible_on_fast_mode(self, driver, enter_addresses):

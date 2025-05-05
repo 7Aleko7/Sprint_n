@@ -62,15 +62,22 @@ class MainPage(BasePage):
     def click_on_fast_mode(self):
         self.click_on_element(Mpg.MODE_FAST)
 
-    @allure.step('Проверяем активность таба')
-    def check_active_tab(self, locator):
-        tab = self.find_element(locator)
-        return "active" in tab.get_attribute("class")
+    @allure.step('Проверяем активность вида Оптимальный')
+    def check_optimal_is_active(self):
+        with check: assert "active" in self.find_element(Mpg.MODE_OPTIMAL).get_attribute("class")
 
-    @allure.step('Проверяем доступность типа передвижения')
-    def check_type_is_not_disabled(self, locator):
-        mode = self.find_element(locator)
-        return "disabled" not in mode.get_attribute("class")
+    @allure.step('Проверяем активность Вида Свой')
+    def check_mine_is_active(self):
+        with check: assert "active" in self.find_element(Mpg.MODE_MINE).get_attribute("class")
+
+    @allure.step('Проверяем доступность всех типов передвижения')
+    def check_all_type_is_not_disabled(self):
+        with check: assert "disabled" not in self.find_element(Mpg.TYPE_CAR).get_attribute("class")
+        with check: assert "disabled" not in self.find_element(Mpg.TYPE_WALK).get_attribute("class")
+        with check: assert "disabled" not in self.find_element(Mpg.TYPE_TAXI).get_attribute("class")
+        with check: assert "disabled" not in self.find_element(Mpg.TYPE_BIKE).get_attribute("class")
+        with check: assert "disabled" not in self.find_element(Mpg.TYPE_SCOOTER).get_attribute("class")
+        with check: assert "disabled" not in self.find_element(Mpg.TYPE_DRIVE).get_attribute("class")
 
     @allure.step('Проверяем отображение кнопки Вызвать такси')
     def check_visibility_call_taxi_button(self):
